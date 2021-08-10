@@ -1,0 +1,96 @@
+## Testing with TypeScript
+​
+<br/>
+​
+Yes, TypeScript(TS) allows us to be strict with the `types` of data we call functions with and the types we allow to be returned - how that data should look. However, TS doesn't have any impact on our logic, or prevent a function returning data with an incorrect value.
+​
+Therefore, the need for testing remains and TS can work with TDD to allow for cleaner tests that only test the behaviour of our code, with TS handling any edge cases.
+​
+TS compiles down to JavaScript(JS), meaning there are many Node.js compatible testing frameworks available with great documentation. These include [Mocha](https://mochajs.org/Mocha) (testing framework) and [Chai](https://www.chaijs.com/) (assertion library) or [Jest](https://jestjs.io/) (framework _and_ library). Most frameworks behave in a similar way so the the choice is yours.
+​
+Below is a cheat sheet specific to Mocha and Chai. These are the tools we are using on this course, specifically for unit testing.
+​
+</br>
+​
+## Mocha set up
+​
+By default Mocha will look for the glob `./test/*.js`. Therefore test files should be put within a `tests` folder _or_ a folder of your choice but the test script must be changed to reflect this.
+​
+- `describe()` enables tests to be grouped as deemed necessary in one block. It takes two arguments, the first a string describing the group of tests and the second a callback function.
+​
+- `it()` function calls are used to test individual behaviours and are often grouped together inside describe blocks. They take two arguments, a string describing what we are testing for and the second a callback function that contains the test assertions.
+​
+</br>
+​
+## Common Chai Assertions
+​
+- `expect()` is a function that we need to import or require from the chai assertion library. Within unit testing, it allows us to chain assertions and state what we expect the behaviour of a function to be based on different scenarios.
+​
+- `to.equal()` asserts that whatever we are testing against strictly equals a given value. This works wonderfully for checking primitive data types but note that while we can check the reference of an object or array, it will not look _inside_ to check the contents.
+​
+- `to.deep.equal()` will assert that the contents of an object or array are what we expect them to be.
+​
+There are many other assertions that can be used as described in the [Chai API docs](https://www.chaijs.com/api/bdd/#method_deep).
+​
+</br>
+​
+## Testing with TS
+​
+TS compiles to JS so we can convert projects from JS into TS in stages. This is particularly useful when testing as we can keep our tests in JS whilst asserting TS functions. However, there are a couple of set up stages to undertake before the testing suite will read TS code.
+​
+1. Create a `tsconfig.json` file.
+2. Install the required TS developer dependencies
+​
+```
+npm i -D typescript @types/node ts-mocha
+```
+​
+3. Alter the test script in you package.json from
+​
+```json
+"node ./node_modules/mocha/bin/mocha **/*.spec.js"
+```
+​
+to
+​
+```json
+"ts-mocha ./src/**/*.spec.js"
+```
+​
+The original script uses Node and Mocha to search for any file ending in `.spec.js`. However, by default, Node cannot read TS so we need to install the relevant dependencies and ask the test script to run TS compatible `ts-mocha`. Following this, we need to specify where we want the testing suite to look for our spec files. In our case we want Mocha to search for any file ending in `.spec.js` within the `src` directory.
+​
+4. Change any file you want to convert into TS to be suffixed with .ts as opposed to .js
+​
+5. Run the test script. You will notice that any TS errors do not break the tests so you will now need to both pass the tests and adhere to the rules of TS.
+​
+Behaviour and type safety. Hurrah!
+​
+<br/>
+​
+## Converting test files into TS
+​
+Converting big projects with lots of tests from JS to TS in one go can be time consuming and overwhelming. It is, therefore, good practice to convert in stages. Now the functions have been converted to TS and still pass all the JS tests, we can go ahead and convert our tests into TS. To do so, we must install a few more dependencies and change our testing script again.
+​
+1. Install the necessary dependencies
+​
+```
+npm i -D @types/mocha @types/chai @types/sinon ts-node
+```
+​
+2. Alter the export inside the function file to be
+​
+```ts
+export default <functionName>
+```
+​
+and the require statements inside the test file to be import statements
+​
+```ts
+import { expect } from 'chai'
+import * as sinon from 'sinon'
+import <functionName> from '<filePath>'
+```
+​
+By changing this syntax we are able to import type safe functions in to our testing file.
+​
+3. Run the tests and fix all the TS bugs!

@@ -10,12 +10,12 @@ const isNumberOrString: NumOrString = (item) => {
 // because the function could be past a number or a string
 type NumOrString = 
 {
-  (a: number|string): number|string
+  (a: number|string): string
 }
 
 
 const isNumberOrString: NumOrString = (item) => {
-  if (typeof item === "num") {
+  if (typeof item === "number") {
     return "num";
   } else {  
     return "string";
