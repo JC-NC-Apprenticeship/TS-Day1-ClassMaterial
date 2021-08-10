@@ -6,8 +6,11 @@ const createUser: unknown = (name, age, occupation) => {
   return newUser;
 };
 */
+
+// This is the structure of the Object
 type NewUser = {name:string; age:number; occupation:string}
 
+// This is the structure of the function
 type CreateUser = {
   (name:string, age:number, occupation:string): NewUser
 }
