@@ -1,4 +1,7 @@
-type Logger = unknown;
+type Logger = {
+  (userName: string, message:string):void;
+  (userName:string, thing:number, message:string):void
+};
 
 const logger: Logger = (userName, numberToLogOrMessage, message?) => {
   if (typeof numberToLogOrMessage === "number") {

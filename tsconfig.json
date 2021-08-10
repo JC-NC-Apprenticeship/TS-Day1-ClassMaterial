@@ -1,6 +1,7 @@
 {"compilerOptions": {
     "strict": true,
-    "outDir": "built"
+    "outDir": "built",
+    "lib" : ["ES2017","DOM"]
     
 },
 "include": ["src"]}
